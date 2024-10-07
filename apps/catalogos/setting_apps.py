@@ -5,5 +5,5 @@ CATALOGOS_SETTINGS_APPS = [
                            'apps.catalogos.proveedores',
                            'apps.catalogos.tipoCompra',
                            'apps.catalogos.tipoFactura',
-                           'apps.catalogos.estado'
+                           'apps.catalogos.estado',
 ]

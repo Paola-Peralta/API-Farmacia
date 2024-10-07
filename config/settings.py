@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]+CATALOGOS_SETTINGS_APPS +SEGURIDAD_SETTINGS_APPS +MOVIMIENTOS_SETTINGS_APPS +ADMINISTRACION_SETTINGS_APPS
 
 #+COMPRAS_SETTINGS_APPS +VENTAS_SETTINGS_APPS +LABORATORIO_SETTINGS_APPS
