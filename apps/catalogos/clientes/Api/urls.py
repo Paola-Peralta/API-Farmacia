@@ -5,5 +5,5 @@ app_name = 'clientes'
 
 urlpatterns = [
     path('', ClientesApiView.as_view(), name='clientes'),
-    path('<int:pk>/', ClientesApiView.as_view(), name='clientes-update'),  # Para PUT
+    path('<int:pk>/', ClientesApiView.as_view(), name='clientes-detail'),  # Para PUT
 ]
