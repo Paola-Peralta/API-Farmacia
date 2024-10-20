@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import ClientesApiView
+from .views import ClientesApiView, ClienteDetails
 
 app_name = 'clientes'
 
 urlpatterns = [
     path('', ClientesApiView.as_view(), name='clientes'),
-    path('<int:pk>/', ClientesApiView.as_view(), name='clientes-detail'),  # Para PUT
+    path('<int:pk>/', ClienteDetails.as_view()),  # Para PUT
 ]

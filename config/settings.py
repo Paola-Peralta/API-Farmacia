@@ -15,8 +15,7 @@ from apps.catalogos.setting_apps import CATALOGOS_SETTINGS_APPS
 from apps.seguridad.setting_apps import SEGURIDAD_SETTINGS_APPS
 from apps.movimientos.setting_apps import MOVIMIENTOS_SETTINGS_APPS
 from apps.administracionExamenes.setting_apps import ADMINISTRACION_SETTINGS_APPS
-#from apps.ventas.setting_apps import VENTAS_SETTINGS_APPS
-#from apps.laboratorio.setting_apps import LABORATORIO_SETTINGS_APPS
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
+    'rest_framework_simplejwt',
 ]+CATALOGOS_SETTINGS_APPS +SEGURIDAD_SETTINGS_APPS +MOVIMIENTOS_SETTINGS_APPS +ADMINISTRACION_SETTINGS_APPS
 
 #+COMPRAS_SETTINGS_APPS +VENTAS_SETTINGS_APPS +LABORATORIO_SETTINGS_APPS
@@ -84,25 +84,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-    # 'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-   #  }
-# }
-
 DATABASES = {
-   'default': {
-       'ENGINE': 'mssql',  # Utilizamos el backend mssql-django
-       'NAME': 'FarmaciaAL', 
-        'HOST': 'DESKTOP-J0NL7FU',  # IP del servidor SQL Server
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Driver ODBC instalado
-            'trusted_connection': 'yes',  # Habilita la autenticación de Windows
-            'extra_params': 'TrustServerCertificate=yes',  # Útil si estás usando SSL sin un certificado de confianza
-      },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'mssql',  # Utilizamos el backend mssql-django
+#        'NAME': 'FarmaciaAL', 
+#         'HOST': 'DESKTOP-J0NL7FU',  # IP del servidor SQL Server
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',  # Driver ODBC instalado
+#             'trusted_connection': 'yes',  # Habilita la autenticación de Windows
+#             'extra_params': 'TrustServerCertificate=yes',  # Útil si estás usando SSL sin un certificado de confianza
+#       },
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -121,6 +121,26 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+# from datetime import timedelta
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+# }
+
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#     'ROTATE_REFRESH_TOKENS': True,
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'ALGORITHM': 'HS256',
+#     'SIGNING_KEY': SECRET_KEY,
+# }
 
 
 # Internationalization

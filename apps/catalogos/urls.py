@@ -4,4 +4,5 @@ urlpatterns = [
     path('clientes/', include('apps.catalogos.clientes.Api.urls')),
     path('proveedores/', include('apps.catalogos.proveedores.Api.urls')),
     path('catalogos/', include('apps.catalogos.catalogos.Api.urls')),
+    path('productos/', include('apps.catalogos.productos.Api.urls')),
 ]
