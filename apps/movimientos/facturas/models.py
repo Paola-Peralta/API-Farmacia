@@ -20,7 +20,7 @@ class Factura(models.Model):
 
 #MODELO DETALLE FACTURA
 class DetalleFactura(models.Model):
-    factura = models.ForeignKey(Factura, verbose_name='Factura', on_delete=models.PROTECT)
+    factura = models.ForeignKey(Factura, related_name='detalles', verbose_name='Factura', on_delete=models.PROTECT)
     producto = models.ForeignKey(Producto, verbose_name='Producto', on_delete=models.PROTECT)
     cantidad = models.IntegerField(verbose_name='Cantidad')
     precio = models.FloatField(verbose_name='Precio')

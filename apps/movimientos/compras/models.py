@@ -18,7 +18,7 @@ class Compra(models.Model):
 
 #DETALLE DE COMPRA 
 class DetallesCompras(models.Model):
-    compra = models.ForeignKey(Compra, verbose_name='Compra', on_delete=models.PROTECT)
+    compra = models.ForeignKey(Compra, related_name='detalles', verbose_name='Compra', on_delete=models.PROTECT)
     producto = models.ForeignKey(Producto, verbose_name='Producto', on_delete=models.PROTECT)
     cantidad = models.IntegerField(verbose_name='Cantidad')
     precio = models.FloatField(verbose_name='Precio')

@@ -1,11 +1,7 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from apps.movimientos.facturas.Api.views import FacturaViewSet
-from .views import *
+from apps.movimientos.facturas.Api.views import FacturaApiView
 
-router = DefaultRouter()
-router.register(r'facturas', FacturaViewSet, basename='facturas')
-
+app_name = 'facturas'
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', FacturaApiView.as_view(), name='facturas'),
 ]

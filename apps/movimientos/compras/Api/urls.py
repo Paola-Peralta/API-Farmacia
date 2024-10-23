@@ -1,10 +1,7 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from apps.movimientos.compras.Api.views import CompraViewSet
-from .views import *
+from apps.movimientos.compras.Api.views import CompraApiView
 
-router = DefaultRouter()
-router.register(r'compras', CompraViewSet, basename='compras')
+app_name = 'compras'
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', CompraApiView.as_view(), name='compras'),
 ]
