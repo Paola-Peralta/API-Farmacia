@@ -4,7 +4,7 @@ from apps.movimientos.compras.models import Compra, DetallesCompras
 @admin.register(Compra)
 class CompraAdmin(admin.ModelAdmin):
     search_fields = ['codigo']
-    list_display = ['codigo', 'fecha', 'proveedorId', 'tipoDeCompraId']
+    list_display = ['codigo', 'fecha', 'proveedorId', 'tipoDeCompraId', 'sucursal']
 
 #DETALLE COMPRA
 @admin.register(DetallesCompras)

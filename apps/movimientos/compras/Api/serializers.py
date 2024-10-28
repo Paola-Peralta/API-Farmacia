@@ -13,7 +13,8 @@ class DetalleCompraSerializer(ModelSerializer):
 class CompraSerializer(ModelSerializer):
     detalles = DetalleCompraSerializer(many=True)
     proveedor_nombre = CharField(source='proveedorId.nombres', read_only = True)
+    sucursal_nombre = CharField(source='sucursal.nombre', read_only = True)
     tipo_compra = CharField(source='tipoDeCompraId.descripcion',read_only = True)
     class Meta:
         model = Compra
-        fields = ['codigo','fecha','proveedorId','proveedor_nombre','tipoDeCompraId', 'tipo_compra', 'detalles']
+        fields = ['codigo','fecha','proveedorId','proveedor_nombre','tipoDeCompraId', 'tipo_compra', 'detalles','sucursal', 'sucursal_nombre']

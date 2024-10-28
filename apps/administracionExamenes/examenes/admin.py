@@ -4,7 +4,7 @@ from apps.administracionExamenes.examenes.models import Examen, DetallesExamen
 @admin.register(Examen)
 class ExamenAdmin(admin.ModelAdmin):
     search_fields = ['codigo', 'descripcion']
-    list_display = ['codigo', 'descripcion', 'costo'] 
+    list_display = ['codigo', 'descripcion'] 
 
  #DETALLE EXAMEN
 @admin.register(DetallesExamen)

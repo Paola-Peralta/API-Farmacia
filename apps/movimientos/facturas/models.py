@@ -2,6 +2,7 @@ from django.db import models
 from apps.catalogos.clientes.models import Clientes
 from apps.catalogos.tipoFactura.models import TipoFacturas
 from apps.catalogos.productos.models import Producto
+from apps.catalogos.catalogos.models import Sucursal
 
 #MODELO FACTURA
 class Factura(models.Model):
@@ -11,7 +12,8 @@ class Factura(models.Model):
     descuento = models.FloatField(verbose_name='Descuento', max_length=50)
     clienteId = models.ForeignKey(Clientes, verbose_name='Cliente', on_delete=models.PROTECT)
     tipoFacturaId = models.ForeignKey(TipoFacturas, verbose_name='Tipo factura', on_delete=models.PROTECT)
-
+    sucursal = models.ForeignKey(Sucursal, verbose_name='Sucursal', on_delete=models.PROTECT)
+    
     class Meta:
         verbose_name_plural = 'Facturas'
 

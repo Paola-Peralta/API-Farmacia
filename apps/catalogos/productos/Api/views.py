@@ -19,7 +19,14 @@ class ProductoApiView(APIView):
         # """
         serializer = ProductoSerializer(data=request.data)
         if serializer.is_valid():
+            warning_message = getattr(serializer, 'warning_message', None)  # Obtener mensaje de advertencia, si existe
             serializer.save()
+
+            # Enviar advertencia en la respuesta si el producto está cerca de vencer
+            response_data = serializer.data
+            if warning_message:
+                response_data['advertencia'] = warning_message
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -47,7 +54,12 @@ class ProductoDetails(APIView):
         
         serializer = ProductoSerializer(producto, data=request.data)
         if serializer.is_valid():
+            warning_message = getattr(serializer, 'warning_message', None)
             serializer.save()
+            response_data = serializer.data
+            if warning_message:
+                response_data['advertencia'] = warning_message
+                
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
