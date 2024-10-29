@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
-    'rest_framework_simplejwt',
+    #'rest_framework_simplejwt',
 ]+CATALOGOS_SETTINGS_APPS +SEGURIDAD_SETTINGS_APPS +MOVIMIENTOS_SETTINGS_APPS +ADMINISTRACION_SETTINGS_APPS
 
 #+COMPRAS_SETTINGS_APPS +VENTAS_SETTINGS_APPS +LABORATORIO_SETTINGS_APPS
