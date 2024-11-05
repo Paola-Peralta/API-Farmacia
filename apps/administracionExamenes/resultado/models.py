@@ -15,8 +15,8 @@ class Resultado(models.Model):
         return f"{self.codigo} - {self.descripcion} "
 
 class ResultadoExamen(models.Model):
-    detalleExamen = models.ForeignKey(DetallesExamen, verbose_name='Detalle de Examen', on_delete=models.PROTECT)
-    resultado = models.ForeignKey(Resultado,verbose_name='Resultado', on_delete=models.PROTECT)
+    detalleExamen = models.ForeignKey(DetallesExamen, related_name='detalles',verbose_name='Detalle de Examen', on_delete=models.PROTECT)
+    resultado = models.ForeignKey(Resultado,related_name='detalles', verbose_name='Resultado', on_delete=models.PROTECT)
     valor = models.FloatField(verbose_name='Valor' )
     estado = models.ForeignKey(Estado, verbose_name='Estado', on_delete=models.PROTECT)
 

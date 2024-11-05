@@ -84,25 +84,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
-#    'default': {
-#        'ENGINE': 'mssql',  # Utilizamos el backend mssql-django
-#        'NAME': 'FarmaciaAL', 
-#         'HOST': 'DESKTOP-J0NL7FU',  # IP del servidor SQL Server
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',  # Driver ODBC instalado
-#             'trusted_connection': 'yes',  # Habilita la autenticación de Windows
-#             'extra_params': 'TrustServerCertificate=yes',  # Útil si estás usando SSL sin un certificado de confianza
-#       },
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# DATABASES = {
+#     'default': {
+#        'ENGINE': 'mssql',  # Utilizamos el backend mssql-django
+#        'NAME': 'SistemaFarmacia', 
+#          'HOST': 'DESKTOP-J0NL7FU',  # IP del servidor SQL Server
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',  # Driver ODBC instalado
+#              'trusted_connection': 'yes',  # Habilita la autenticación de Windows
+#              'extra_params': 'TrustServerCertificate=yes',  # Útil si estás usando SSL sin un certificado de confianza
+#        },
+#      }
+#  }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -123,24 +123,26 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# from datetime import timedelta
+# # from datetime import timedelta
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
+#          'rest_framework_simplejwt.authentication.JWTAuthentication',
+#      ),
+#      'DEFAULT_PERMISSION_CLASSES': (
 #         'rest_framework.permissions.IsAuthenticated',
-#     ),
-# }
+#      ),
+#      'DEFAULT_PAGINATION_CLASS': 'rest_framework-pagination.PageNumberPagination',
+#      'PAGE_SIZE':10,
+#  }
 
 # SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-#     'ROTATE_REFRESH_TOKENS': True,
-#     'BLACKLIST_AFTER_ROTATION': True,
-#     'ALGORITHM': 'HS256',
-#     'SIGNING_KEY': SECRET_KEY,
-# }
+#      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+#      'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#      'ROTATE_REFRESH_TOKENS': True,
+#      'BLACKLIST_AFTER_ROTATION': True,
+#      'ALGORITHM': 'HS256',
+#      'SIGNING_KEY': SECRET_KEY,
+#  }
 
 
 # Internationalization

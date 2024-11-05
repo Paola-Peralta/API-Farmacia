@@ -12,11 +12,10 @@ class Producto(models.Model):
     categoria = models.ForeignKey(Categoria, verbose_name = 'Categoria', on_delete=models.PROTECT )
     medidas = models.ForeignKey(Medidas, verbose_name='Unidas de Medidas', on_delete= models.PROTECT )
     presentaciones = models.ForeignKey(Presentaciones, verbose_name= 'Presentaciones', on_delete=models.PROTECT )
-    
+
     class Meta:
         verbose_name_plural = 'Producto'
         
     
     def __str__(self):
         return f"{self.codigoProducto} - {self.nombreProducto}"
-

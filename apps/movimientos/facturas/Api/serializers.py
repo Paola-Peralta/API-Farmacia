@@ -11,9 +11,9 @@ class FacturaSerializer(ModelSerializer):
     detalles = DetalleFacturaSerializer(many= True)
     cliente_nombre = CharField(source='clienteId.nombres', read_only = True)
     tipo_factura = CharField(source='tipoFacturaId.descripcion', read_only = True)
-
+    sucursal_nombre = CharField(source='sucursal.nombre', read_only = True)
     class Meta:
         model = Factura
-        fields = ['codigo', 'fecha', 'iva', 'descuento','clienteId','cliente_nombre','tipoFacturaId','tipo_factura','detalles']
+        fields = ['codigo', 'fecha', 'iva', 'descuento','clienteId','cliente_nombre','tipoFacturaId','tipo_factura','detalles','sucursal', 'sucursal_nombre']
 
 
