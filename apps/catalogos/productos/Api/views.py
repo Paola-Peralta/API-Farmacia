@@ -4,8 +4,15 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from apps.catalogos.productos.models import Producto
 from apps.catalogos.productos.Api.serializers import ProductoSerializer
+from apps.seguridad.permissions import CustomPermission
+from rest_framework.permissions import IsAuthenticated
 
 class ProductoApiView(APIView):
+
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Producto
+
+
     @swagger_auto_schema(response={200: ProductoSerializer(many=True)})
     def get(self, request):
         producto = Producto.objects.all()
@@ -33,6 +40,9 @@ class ProductoApiView(APIView):
 class ProductoDetails(APIView):
     #Para obtener, actualizar y eliminar un producto especifico
 
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Producto
+
     @swagger_auto_schema(responses={200: ProductoSerializer})
     def get(self, request, pk):
            
@@ -52,6 +62,8 @@ class ProductoDetails(APIView):
         except Producto.DoesNotExist:
             return Response ({'Error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
         
+        self.check_object_permissions(request, producto) 
+        
         serializer = ProductoSerializer(producto, data=request.data)
         if serializer.is_valid():
             warning_message = getattr(serializer, 'warning_message', None)
@@ -70,6 +82,8 @@ class ProductoDetails(APIView):
         except Producto.DoesNotExist:
             return Response({'Error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
         
+        self.check_object_permissions(request, producto) 
+        
         serializer = ProductoSerializer(producto, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -82,6 +96,8 @@ class ProductoDetails(APIView):
             producto = Producto.objects.get(pk=pk)
         except Producto.DoesNotExist:
             return Response ({'Error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        self.check_object_permissions(request, producto) 
         
         producto.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -4,9 +4,14 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from apps.catalogos.clientes.models import Clientes
 from apps.catalogos.clientes.Api.serializers import ClientesSerializer
+from apps.seguridad.permissions import CustomPermission
+from rest_framework.permissions import IsAuthenticated
 #from drf_yasg import openapi
 
 class ClientesApiView(APIView):
+
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Clientes
 
     #Vistar para listar o crear clientes
     @swagger_auto_schema(response={200: ClientesSerializer(many=True)})
@@ -27,6 +32,9 @@ class ClientesApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ClienteDetails(APIView):
+
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Clientes
     #Para obtener, actualizar y eliminar un cliente especifico
 
     @swagger_auto_schema(responses={200: ClientesSerializer})
@@ -39,6 +47,8 @@ class ClienteDetails(APIView):
         serializer = ClientesSerializer(clientes)
         return Response(serializer.data)
     
+        
+    
     @swagger_auto_schema(request_body=ClientesSerializer, responses={201: ClientesSerializer})
     def put(self, request, pk):
 
@@ -46,6 +56,8 @@ class ClienteDetails(APIView):
             clientes = Clientes.objects.get(pk=pk)
         except Clientes.DoesNotExist:
             return Response ({'Error': 'Cliente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        self.check_object_permissions(request, clientes)
         
         serializer = ClientesSerializer(clientes, data=request.data)
         if serializer.is_valid():
@@ -60,6 +72,8 @@ class ClienteDetails(APIView):
         except Clientes.DoesNotExist:
             return Response({'Error': 'Cliente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
         
+        self.check_object_permissions(request, clientes)
+        
         serializer = ClientesSerializer(clientes, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -72,6 +86,8 @@ class ClienteDetails(APIView):
             clientes = Clientes.objects.get(pk=pk)
         except Clientes.DoesNotExist:
             return Response ({'Error': 'Cliente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        self.check_object_permissions(request, clientes)
         
         clientes.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

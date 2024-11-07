@@ -10,10 +10,15 @@ from apps.catalogos.catalogos.models import Sucursal
 from apps.catalogos.tipoCompra.models import TipoCompras
 from apps.movimientos.compras.Api.serializers import CompraSerializer
 from drf_yasg.utils import swagger_auto_schema
+from apps.seguridad.permissions import CustomPermission
+from rest_framework.permissions import IsAuthenticated
 
 class CompraApiView(APIView):
 
     #Metodo get para obtener una compra
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Compra
+
     @swagger_auto_schema(response={200: CompraSerializer(many=True)}) 
     def get(self, request):
         compras = Compra.objects.all()
@@ -61,6 +66,9 @@ class CompraApiView(APIView):
     
 class CompraDetails(APIView):
 
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Compra
+
     @swagger_auto_schema(request_body=CompraSerializer)
     def put(self, request, pk):
         # Validar si el pk de la compra se ha proporcionado
@@ -69,6 +77,8 @@ class CompraDetails(APIView):
         
         compra = get_object_or_404(Compra, pk=pk)
         serializer = CompraSerializer(compra, data=request.data)
+
+        self.check_object_permissions(request, compra)
 
         if serializer.is_valid():
             try:

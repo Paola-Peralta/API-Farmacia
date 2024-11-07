@@ -8,8 +8,14 @@ from apps.administracionExamenes.examenes.models import Examen, DetallesExamen
 from apps.catalogos.estado.models import Estado
 from apps.administracionExamenes.resultado.models import Resultado, ResultadoExamen
 from drf_yasg.utils import swagger_auto_schema
+from apps.seguridad.permissions import CustomPermission
+from rest_framework.permissions import IsAuthenticated
 
 class ResultadoApiView(APIView):
+
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Resultado
+
     @swagger_auto_schema(response={200: ResultadoSerializer(many=True)})
     def get(self, request):
         resultados = Resultado.objects.all()  # Asegúrate de que estás obteniendo instancias de Resultado
@@ -52,10 +58,16 @@ class ResultadoApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ResultadoDetails(APIView):
+
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Resultado
+
     @swagger_auto_schema(request_body=ResultadoSerializer)
     def put(self, request, pk):
         resultado = get_object_or_404(Resultado, pk=pk)
         serializer = ResultadoSerializer(resultado, data=request.data)
+
+        self.check_object_permissions(request, resultado)
 
         if serializer.is_valid():
             try:

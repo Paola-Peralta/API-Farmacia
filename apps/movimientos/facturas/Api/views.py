@@ -10,8 +10,13 @@ from apps.catalogos.catalogos.models import Sucursal
 from apps.catalogos.tipoFactura.models import TipoFacturas
 from apps.movimientos.facturas.Api.serializers import FacturaSerializer
 from drf_yasg.utils import swagger_auto_schema
+from apps.seguridad.permissions import CustomPermission
+from rest_framework.permissions import IsAuthenticated
 
 class FacturaApiView(APIView):
+
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Factura
     
     # Método GET para obtener una factura específica o listar todas
     @swagger_auto_schema(responses={200: FacturaSerializer(many=True)})
@@ -101,6 +106,9 @@ class FacturaApiView(APIView):
 
 class FacturaDetails(APIView):
 
+    permission_classes = [IsAuthenticated, CustomPermission]
+    model = Factura
+
     @swagger_auto_schema(request_body=FacturaSerializer)
     def put(self, request, pk=None):
         # Validar si el pk de la factura se ha proporcionado
@@ -109,6 +117,8 @@ class FacturaDetails(APIView):
         
         factura = get_object_or_404(Factura, pk=pk)
         serializer = FacturaSerializer(factura, data=request.data)
+
+        self.check_object_permissions(request, factura)
 
         if serializer.is_valid():
             try:
