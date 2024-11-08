@@ -10,20 +10,40 @@ from apps.administracionExamenes.resultado.models import Resultado, ResultadoExa
 from drf_yasg.utils import swagger_auto_schema
 from apps.seguridad.permissions import CustomPermission
 from rest_framework.permissions import IsAuthenticated
+from config.utils.Pagination import PaginationMixin
+import logging.handlers
 
-class ResultadoApiView(APIView):
+# Configura el logger
+logger = logging.getLogger(__name__)
+
+
+class ResultadoApiView(PaginationMixin,APIView):
 
     permission_classes = [IsAuthenticated, CustomPermission]
     model = Resultado
 
     @swagger_auto_schema(response={200: ResultadoSerializer(many=True)})
     def get(self, request):
-        resultados = Resultado.objects.all()  # Asegúrate de que estás obteniendo instancias de Resultado
+
+
+        logger.info("GET request to list all resultado")
+        resultados = Resultado.objects.all().order_by('id')
+        page = self.paginate_queryset(resultados,request)
+
+        if page is not None:
+            serializer = ResultadoSerializer(page, many=True)
+            logger.info("Paginated response for resultado")
+            return self.get_paginated_response(serializer.data)
+
         serializer = ResultadoSerializer(resultados, many=True)
+        logger.error("Returning all examen without pagination")
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     @swagger_auto_schema(request_body=ResultadoSerializer)
     def post(self, request):
+
+        logger.info("POST request to create a new resultado")
+
         serializer = ResultadoSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -54,6 +74,7 @@ class ResultadoApiView(APIView):
 
             except Exception as e:
                 return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error("Failed to create resultado: %s", serializer.errors)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -64,6 +85,9 @@ class ResultadoDetails(APIView):
 
     @swagger_auto_schema(request_body=ResultadoSerializer)
     def put(self, request, pk):
+
+        logger.info("PUT request to update resultado with ID: %s", pk)
+
         resultado = get_object_or_404(Resultado, pk=pk)
         serializer = ResultadoSerializer(resultado, data=request.data)
 
@@ -77,6 +101,7 @@ class ResultadoDetails(APIView):
                     resultado.descripcion = serializer.validated_data['descripcion']
                     resultado.examen = get_object_or_404(Examen, id=serializer.validated_data['examen'].id)
                     resultado.save()
+                    logger.info("resultado updated successfully with ID: %s", pk)
 
                     # Eliminar los detalles existentes antes de agregar nuevos
                     ResultadoExamen.objects.filter(resultado=resultado).delete()
@@ -99,5 +124,7 @@ class ResultadoDetails(APIView):
 
             except Exception as e:
                 return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            
+        logger.error("Failed to update resultado with ID: %s. Errors: %s", pk, serializer.errors)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

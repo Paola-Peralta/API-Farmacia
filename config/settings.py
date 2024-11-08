@@ -15,6 +15,7 @@ from apps.catalogos.setting_apps import CATALOGOS_SETTINGS_APPS
 from apps.seguridad.setting_apps import SEGURIDAD_SETTINGS_APPS
 from apps.movimientos.setting_apps import MOVIMIENTOS_SETTINGS_APPS
 from apps.administracionExamenes.setting_apps import ADMINISTRACION_SETTINGS_APPS
+from datetime import timedelta
 
 
 
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'drf_yasg',
-    #'rest_framework_simplejwt',
+    'rest_framework_simplejwt',
 ]+CATALOGOS_SETTINGS_APPS +SEGURIDAD_SETTINGS_APPS +MOVIMIENTOS_SETTINGS_APPS +ADMINISTRACION_SETTINGS_APPS
 
 #+COMPRAS_SETTINGS_APPS +VENTAS_SETTINGS_APPS +LABORATORIO_SETTINGS_APPS
@@ -135,14 +136,14 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
  }
 
-# SIMPLE_JWT = {
-#      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-#      'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-#      'ROTATE_REFRESH_TOKENS': True,
-#      'BLACKLIST_AFTER_ROTATION': True,
-#      'ALGORITHM': 'HS256',
-#      'SIGNING_KEY': SECRET_KEY,
-#  }
+SIMPLE_JWT = {
+      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+      'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+      'ROTATE_REFRESH_TOKENS': True,
+      'BLACKLIST_AFTER_ROTATION': True,
+      'ALGORITHM': 'HS256',
+      'SIGNING_KEY': SECRET_KEY,
+  }
 
 
 # Internationalization

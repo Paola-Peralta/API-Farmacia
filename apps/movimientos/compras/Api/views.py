@@ -12,8 +12,13 @@ from apps.movimientos.compras.Api.serializers import CompraSerializer
 from drf_yasg.utils import swagger_auto_schema
 from apps.seguridad.permissions import CustomPermission
 from rest_framework.permissions import IsAuthenticated
+from config.utils.Pagination import PaginationMixin
+import logging.handlers
 
-class CompraApiView(APIView):
+# Configura el logger
+logger = logging.getLogger(__name__)
+
+class CompraApiView(PaginationMixin,APIView):
 
     #Metodo get para obtener una compra
     permission_classes = [IsAuthenticated, CustomPermission]
@@ -21,12 +26,24 @@ class CompraApiView(APIView):
 
     @swagger_auto_schema(response={200: CompraSerializer(many=True)}) 
     def get(self, request):
-        compras = Compra.objects.all()
-        serializer = CompraSerializer(compras, many=True)
+
+        logger.info("GET request to list all compra")
+        compra = Compra.objects.all().order_by('id')
+        page = self.paginate_queryset(compra,request)
+
+        if page is not None:
+            serializer = CompraSerializer(page, many=True)
+            logger.info("Paginated response for compra")
+            return self.get_paginated_response(serializer.data)
+
+        serializer = CompraSerializer(compra, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=CompraSerializer)
     def post(self, request):
+
+        logger.info("POST request to create a new compra")
+
         serializer = CompraSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -47,6 +64,7 @@ class CompraApiView(APIView):
                         cantidad = detalles_data['cantidad']
 
                         producto.save()
+                        logger.info("producto created successfully")
 
                         DetallesCompras.objects.create(
                             compra=compra,
@@ -55,12 +73,15 @@ class CompraApiView(APIView):
                             precio=detalles_data['precio']                           
                         )
                     compra.save()
+                    logger.info("compra created successfully")
 
                     compraSerializer = CompraSerializer(compra)
                     return Response(compraSerializer.data, status=status.HTTP_201_CREATED)
 
             except Exception as e:
                 return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            
+        logger.error("Failed to create compra: %s", serializer.errors)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -71,6 +92,9 @@ class CompraDetails(APIView):
 
     @swagger_auto_schema(request_body=CompraSerializer)
     def put(self, request, pk):
+
+        logger.info("PUT request to update compra with ID: %s", pk)
+
         # Validar si el pk de la compra se ha proporcionado
         if not pk:
             return Response({"Error": "Se requiere el ID de la compra para actualizar."}, status=status.HTTP_400_BAD_REQUEST)
@@ -114,11 +138,14 @@ class CompraDetails(APIView):
                         )
 
                     compra.save()
+                    logger.info("factura updated successfully with ID: %s", pk)
 
                     compra_serializer = CompraSerializer(compra)
                     return Response(compra_serializer.data, status=status.HTTP_200_OK)
 
             except Exception as e:
                 return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            
+        logger.error("Failed to partially update factura with ID: %s. Errors: %s", pk, serializer.errors)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

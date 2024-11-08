@@ -32,7 +32,6 @@ class ExamenApiView(PaginationMixin,APIView):
             logger.info("Paginated response for examen")
             return self.get_paginated_response(serializer.data)
 
-        examen = Examen.objects.all()
         serializer = ExamenSerializer(examen, many=True)
         logger.error("Returning all examen without pagination")
         return Response(serializer.data, status=status.HTTP_200_OK)

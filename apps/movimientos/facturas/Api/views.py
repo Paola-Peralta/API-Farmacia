@@ -12,8 +12,13 @@ from apps.movimientos.facturas.Api.serializers import FacturaSerializer
 from drf_yasg.utils import swagger_auto_schema
 from apps.seguridad.permissions import CustomPermission
 from rest_framework.permissions import IsAuthenticated
+from config.utils.Pagination import PaginationMixin
+import logging.handlers
 
-class FacturaApiView(APIView):
+# Configura el logger
+logger = logging.getLogger(__name__)
+
+class FacturaApiView(PaginationMixin,APIView):
 
     permission_classes = [IsAuthenticated, CustomPermission]
     model = Factura
@@ -21,6 +26,15 @@ class FacturaApiView(APIView):
     # Método GET para obtener una factura específica o listar todas
     @swagger_auto_schema(responses={200: FacturaSerializer(many=True)})
     def get(self, request, pk=None):
+
+        logger.info("GET request to list all factura")
+        page = self.paginate_queryset(facturas,request)
+
+        if page is not None:
+            serializer = FacturaSerializer(page, many=True)
+            logger.info("Paginated response for factura")
+            return self.get_paginated_response(serializer.data)
+
         if pk:
             # Obtener una factura específica
             factura = get_object_or_404(Factura, pk=pk)
@@ -34,6 +48,9 @@ class FacturaApiView(APIView):
         
     @swagger_auto_schema(request_body=FacturaSerializer)
     def post(self,request):
+
+        logger.info("POST request to create a new factura")
+
         serializer = FacturaSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -74,6 +91,7 @@ class FacturaApiView(APIView):
                             )
                         producto.cantidad -= cantidad
                         producto.save()
+                        logger.info("producto created successfully")
 
                         DetalleFactura.objects.create(
                             factura=factura,
@@ -94,12 +112,14 @@ class FacturaApiView(APIView):
                     factura.iva = iva_total
                     factura.descuento = descuento
                     factura.save()
+                    logger.info("factura created successfully")
 
                     facturaSerializer = FacturaSerializer(factura)
                     return Response(facturaSerializer.data, status=status.HTTP_201_CREATED)
                 
             except Exception as e:
                 return Response({"Error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error("Failed to create factura: %s", serializer.errors)
             
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -111,6 +131,9 @@ class FacturaDetails(APIView):
 
     @swagger_auto_schema(request_body=FacturaSerializer)
     def put(self, request, pk=None):
+
+        logger.info("PUT request to update factura with ID: %s", pk)
+
         # Validar si el pk de la factura se ha proporcionado
         if not pk:
             return Response({"Error": "Se requiere el ID de la factura para actualizar."}, status=status.HTTP_400_BAD_REQUEST)
@@ -157,6 +180,7 @@ class FacturaDetails(APIView):
 
                         producto.cantidad -= cantidad
                         producto.save()
+                        logger.info("producto created successfully")
 
                         # Crear un nuevo detalle de factura con los datos actualizados
                         DetalleFactura.objects.create(
@@ -177,6 +201,7 @@ class FacturaDetails(APIView):
                     factura.iva = iva_total
                     factura.descuento = descuento
                     factura.save()
+                    logger.info("factura created successfully")
 
                     factura_serializer = FacturaSerializer(factura)
                     return Response(factura_serializer.data, status=status.HTTP_200_OK)
