@@ -78,7 +78,7 @@ class FacturaApiView(PaginationMixin,APIView):
                         clienteId=cliente, 
                         tipoFacturaId =tipoFactura, 
                         sucursal=sucursal)
-
+                    #Crea el detalle de la factura
                     for detalles_data in detalle_data:
                         producto = get_object_or_404(Producto, id=detalles_data['producto'].id)
                         cantidad = detalles_data['cantidad']
@@ -89,6 +89,7 @@ class FacturaApiView(PaginationMixin,APIView):
                                 {"Error": f"Stock insuficiente para el producto: {producto.nombreProducto}"},
                                 status=status.HTTP_400_BAD_REQUEST
                             )
+                        #Actualiza el inventario
                         producto.cantidad -= cantidad
                         producto.save()
                         logger.info("producto created successfully")
