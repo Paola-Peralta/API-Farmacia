@@ -28,6 +28,7 @@ class FacturaApiView(PaginationMixin,APIView):
     def get(self, request, pk=None):
 
         logger.info("GET request to list all factura")
+        facturas = Factura.objects.all().order_by('id')
         page = self.paginate_queryset(facturas,request)
 
         if page is not None:
@@ -37,8 +38,8 @@ class FacturaApiView(PaginationMixin,APIView):
 
         if pk:
             # Obtener una factura específica
-            factura = get_object_or_404(Factura, pk=pk)
-            serializer = FacturaSerializer(factura)
+            facturas = get_object_or_404(Factura, pk=pk)
+            serializer = FacturaSerializer(facturas)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Listar todas las facturas
