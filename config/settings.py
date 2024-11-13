@@ -29,10 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-oz=2%q2=$mil@-*nsr#w@6-*6u5v48mtoabb#%-l2zia)kig*3'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 ]+CATALOGOS_SETTINGS_APPS +SEGURIDAD_SETTINGS_APPS +MOVIMIENTOS_SETTINGS_APPS +ADMINISTRACION_SETTINGS_APPS
 
-#+COMPRAS_SETTINGS_APPS +VENTAS_SETTINGS_APPS +LABORATORIO_SETTINGS_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,25 +84,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#        'ENGINE': 'mssql',  # Utilizamos el backend mssql-django
-#        'NAME': 'SistemaFarmacia', 
-#          'HOST': 'DESKTOP-J0NL7FU',  # IP del servidor SQL Server
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',  # Driver ODBC instalado
-#              'trusted_connection': 'yes',  # Habilita la autenticación de Windows
-#              'extra_params': 'TrustServerCertificate=yes',  # Útil si estás usando SSL sin un certificado de confianza
-#        },
-#      }
-#  }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -123,8 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# from datetime import timedelta
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': (
          'rest_framework_simplejwt.authentication.JWTAuthentication',

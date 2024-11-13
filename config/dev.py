@@ -8,16 +8,18 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost']
 
 DATABASES = {
     'default': {
-       'ENGINE': 'mssql',  # Utilizamos el backend mssql-django
-       'NAME': config('BD_NAME'), 
-         'HOST': config('BD_HOST'),  # IP del servidor SQL Server
+        'ENGINE': 'mssql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        # 'PORT': '1220',  # Usa esto si tu servidor requiere un puerto específico
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Driver ODBC instalado
-             'trusted_connection': 'yes',  # Habilita la autenticación de Windows
-             'extra_params': 'TrustServerCertificate=yes',  # Útil si estás usando SSL sin un certificado de confianza
-       },
-     }
- }
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=yes;',
+        },
+    }
+}
 
 # Configura los detalles de conexión a Papertrail
 LOGGING = {
