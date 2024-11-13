@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 asgiref==3.8.1
+=======
+
+>>>>>>> 7640fe93c0a1444c76ccadfc14752c94de387f7b
 Django==4.2
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
