@@ -30,14 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-oz=2%q2=$mil@-*nsr#w@6-*6u5v48mtoabb#%-l2zia)kig*3'
 
 # # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,6 +79,15 @@ TEMPLATES = [
     },
 ]
 
+JAZZMIN_SETTINGS = {
+    "site_title": "Farmacia Angeluz",
+    "site_header": "Mi Administración",
+    "welcome_sign": "Bienvenido a PharmaLuz",
+    "copyright": "Farmacia Angeluz",
+    # # Personalización de colores
+    "theme": "darkly", 
+}
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -115,7 +125,7 @@ REST_FRAMEWORK = {
  }
 
 SIMPLE_JWT = {
-      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=90),
       'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
       'ROTATE_REFRESH_TOKENS': True,
       'BLACKLIST_AFTER_ROTATION': True,
